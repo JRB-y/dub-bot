@@ -23,8 +23,8 @@ export default {
 
     if (!user) return interaction.reply('You are quite! \n Start talking to earn points...\n 1 word = 1 points');
 
-    let message = `$dub: ${user.dubs}\nlevel: ${user.level}\nslots: ${user.seeds.length} / ${user.max_seeds}\n------------------------------\n\n🌱 You have ${user.seeds.length} plant(s):\n\n`;
-    console.log('user.seeds', user.seeds);
+    let message = `$dub: ${user.dubs}\nlevel: ${user.level}\nslots: ${user.seeds.length} / ${user.max_seeds}\n------------------------------\n\nYou have ${user .seeds.length} plant(s):\n\n`;
+
     const userSeeds = user.seeds.map(seed => {
       const foundSeed = seeds.find(s => s._id.toString() === seed.id.toString());
       const feeds = seed.feeds.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
@@ -32,9 +32,10 @@ export default {
       const slotId = seed._id.toString().substr(seed._id.toString().length - 3);
       let message = `${slotId} - ${feeds} / ${growth} - ${foundSeed.name}`;
       const nextFeed = moment(seed.last_feed).add(15, 'm');
-
-      if (nextFeed.isBefore(moment())) {
-        message = `💧 ${message} \n`;
+      if (seed.feeds >= seed.max_feeds) {
+        message = `🌱 ${message} (harvestable) \n`;
+      } else if (nextFeed.isBefore(moment())) {
+        message = `💧 ${message} (feedable) \n`;
       } else {
         message = `🕧 ${message} (feedable at ${nextFeed.format('yyyy-MM-DD HH:mm')}) \n`;
       }

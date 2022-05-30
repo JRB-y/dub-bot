@@ -38,15 +38,33 @@ export default {
     }
 
     const now = moment();
-    const feedable = user.seeds.filter(seed => moment(seed.last_feed).add(15, 'm').isBefore(now));
+    const feedable = [];
+    const harvestable = [];
+    for (const seed of user.seeds) {
+      const canHarvest = seed.max_feed >= seed.feeds;
+      const canFeed = moment(seed.last_feed).add(15, 'm').isBefore(now) && !canHarvest;
+
+      if (canHarvest) {
+        harvestable.push(seed);
+      }
+      if (canFeed) {
+        feedable.push(seed);
+      }
+    }
     const feedTotalCost = feedable.length * 200;
 
     switch (subcommand) {
+      /**
+       * Feed cost subcommand
+       */
       case 'cost':
         await interaction.reply(codeBlock('fix', `⚠️  You have ${feedable.length}/${user.seeds.length} feedable plant(s) \n    Feeding them will cost you ${feedTotalCost} $dub.`));
         break;
+
+      /**
+       * Feed plant <slot> subcommand
+       */
       case 'plant':
-        
         if (user.dubs < 200) {
           await interaction.reply(codeBlock('diff', '- You dont have enough $dub to feed!'));
           return;

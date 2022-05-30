@@ -10,6 +10,7 @@ const Models = {
     seeds: [{
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'Seed' },
       feeds: { type: Number, default: 0 },
+      max_feeds: { type: Number, require: true },
       last_feed: { type: Date, default: null },
       created_at: { type: Date, default: Date.now },
     }]

@@ -78,7 +78,7 @@ export default {
         }
 
         // we gonna buy here!
-        user.seeds.push({ id: seedToBuy.id, feeds: 0, last_feed: null, grow_feeds: seedToBuy.grow_feeds, last_feed: moment().subtract(15, 'm') });
+        user.seeds.push({ id: seedToBuy.id, feeds: 0, max_feeds: seedToBuy.grow_feeds, last_feed: null, grow_feeds: seedToBuy.grow_feeds, last_feed: moment().subtract(15, 'm') });
         user.dubs = user.dubs - seedToBuy.price;
         await user.save();
 
