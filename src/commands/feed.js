@@ -71,7 +71,7 @@ export default {
         }
 
         const slotId = interaction.options.getString('slot');
-        const seedToFeed = user.seeds.find(seed => seed._id.toString().includes(slotId));
+        const seedToFeed = user.seeds.find(seed => seed._id.toString().endsWith(slotId));
         if (!seedToFeed) {
           await interaction.reply(codeBlock('fix', '⚠️  Invalid slot! \nCheck /inventory to find the 3 digit slot id.'));
           return;
