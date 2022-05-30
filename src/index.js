@@ -12,7 +12,10 @@ import { Levels } from './config/index.js';
 
 import { Client, Collection, Intents } from 'discord.js';
 import { codeBlock } from '@discordjs/builders';
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -24,13 +27,31 @@ for (const file of commandFiles) {
   client.commands.set(command.default.data.name, command.default);
 }
 
-client.once('ready', async () => {
+
+client.once('ready', async (client) => {
   try {
     await db();
     console.log(`🤖 ${process.env.BOT_NAME} is online 🚀!`);
   } catch (error) {
     console.warn(error);
   }
+});
+
+client.on('messageReactionAdd', async (reaction, user) => {
+  if (reaction.message.channelId !== process.env.WELCOME_CHANNEL) return;
+  const guild = reaction.message.guild;
+  let role = guild.roles.cache.find(r => r.name === process.env.WELCOME_ROLE);
+  if (role) {
+    await guild.members.cache.get(user.id).roles.add(role);
+  };
+});
+client.on('messageReactionRemove', async (reaction, user) => {
+  if (reaction.message.channelId !== process.env.WELCOME_CHANNEL) return;
+  const guild = reaction.message.guild;
+  let role = guild.roles.cache.find(r => r.name === process.env.WELCOME_ROLE);
+  if (role) {
+    await guild.members.cache.get(user.id).roles.remove(role);
+  };
 });
 
 client.on('messageCreate', async (message) => {
@@ -61,7 +82,7 @@ client.on('messageCreate', async (message) => {
   if (levelUp) {
     let role = message.guild.roles.cache.find(r => r.name === `Bot level ${user.level + 1}`);
     if (role) {
-      await message.guild.members.cache.get(message.author.id).roles.add(role)
+      await message.guild.members.cache.get(message.author.id).roles.add(role);
       message.reply(codeBlock('yaml', `You have collected ${totalDubs} $dubs and reached level ${user.level + 1}!`));
     };
   }

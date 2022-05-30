@@ -40,7 +40,6 @@ export default {
       }
       return message;
     });
-    console.log('userSeeds', userSeeds);
 
     message.concat(userSeeds.join('\n'));
     await interaction.reply(codeBlock('yaml', message + userSeeds.join('\n')));
