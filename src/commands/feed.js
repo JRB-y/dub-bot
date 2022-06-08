@@ -32,8 +32,15 @@ export default {
     const subcommand = interaction.options.getSubcommand();
 
     const user = await User.getByDiscord(interaction.user.id);
+    if (!user) return interaction.reply({
+      content: 'You are quite! \n Start talking to earn points...\n 1 word = 1 points',
+      ephemeral: true,
+    });
     if (!user.seeds.length) {
-      await interaction.reply(codeBlock('diff', '- ⚠️ You have no seeds to feed! /shop to buy some!'));
+      await interaction.reply({
+        content: codeBlock('diff', '- ⚠️ You have no seeds to feed! /shop to buy some!'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -58,7 +65,10 @@ export default {
        * Feed cost subcommand
        */
       case 'cost':
-        await interaction.reply(codeBlock('fix', `⚠️  You have ${feedable.length}/${user.seeds.length} feedable plant(s) \n    Feeding them will cost you ${feedTotalCost} $dub.`));
+        await interaction.reply({
+          content: codeBlock('fix', `⚠️  You have ${feedable.length}/${user.seeds.length} feedable plant(s) \n    Feeding them will cost you ${feedTotalCost} $dub.`),
+          ephemeral: true,
+        });
         break;
 
       /**
@@ -66,29 +76,40 @@ export default {
        */
       case 'plant':
         if (user.dubs < 200) {
-          await interaction.reply(codeBlock('diff', '- You dont have enough $dub to feed!'));
+          await interaction.reply({
+            content: codeBlock('diff', '- You dont have enough $dub to feed!'),
+            ephemeral: true,
+          });
           return;
         }
 
         const slotId = interaction.options.getString('slot');
         const seedToFeed = user.seeds.find(seed => seed._id.toString().endsWith(slotId));
         if (!seedToFeed) {
-          await interaction.reply(codeBlock('fix', '⚠️  Invalid slot! \nCheck /inventory to find the 3 digit slot id.'));
+          await interaction.reply({
+            content: codeBlock('fix', '⚠️  Invalid slot! \nCheck /inventory to find the 3 digit slot id.'),
+            ephemeral: true,
+          });
           return;
         }
 
         const nextFeed = moment(seedToFeed.last_feed).add(15, 'm');
         if (nextFeed.isAfter(now)) {
-          await interaction.reply(codeBlock('fix', `⚠️  You cant feed this plant until ${nextFeed.format('yyyy-MM-DD HH:mm')}`));
+          await interaction.reply({
+            content: codeBlock('fix', `⚠️  You cant feed this plant until ${nextFeed.format('yyyy-MM-DD HH:mm')}`),
+            ephemeral: true,
+          });
           return;
         }
 
         user.dubs = user.dubs - 200;
         seedToFeed.feeds += 1;
         seedToFeed.last_feed = now;
-        // user.seeds = [...user.seeds, seedToFeed ];
         await user.save();
-        await interaction.reply(codeBlock('yaml', '🌱💧 You fed your plant 🌱💧'));
+        await interaction.reply({
+          content: codeBlock('yaml', '💧 🌱You fed your plant 🌱💧'),
+          ephemeral: true,
+        });
       default:
         break;
     }

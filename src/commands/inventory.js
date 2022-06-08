@@ -43,6 +43,9 @@ export default {
     });
 
     message.concat(userSeeds.join('\n'));
-    await interaction.reply(codeBlock('yaml', message + userSeeds.join('\n')));
+    await interaction.reply({
+      content: codeBlock('yaml', message + userSeeds.join('\n')),
+      ephemeral: true,
+    });
   },
 };

@@ -52,13 +52,19 @@ export default {
 
         // const seedToBuy = Seeds.find(s => s.name === interaction.options.getString('seed'));
         if (!seedToBuy) {
-          await interaction.reply(codeBlock('diff', '- Invalid seed! What are you trying to do? :) '));
+          await interaction.reply({
+            content: codeBlock('diff', '- Invalid seed! What are you trying to do? :) '),
+            ephemeral: true,
+          });
           return;
         }
 
         const user = await User.getByDiscord(interaction.user.id);
         // if user dont exists or dont have points
-        if (!user) return interaction.reply('You are quite! \n Start talking to earn $dub...\n 1 word = 1 $dub');
+        if (!user) return interaction.reply({
+          content: 'You are quite! \n Start talking to earn $dub...\n 1 word = 1 $dub',
+          ephemeral: true,
+        });
 
         // If user has already this seed
         // if (user.seeds.map(seed => seed.seedId).includes(seedToBuy.id)) {
@@ -68,12 +74,18 @@ export default {
 
         // check for empty slot
         if (user.max_seeds <= user.seeds.length) {
-          await interaction.reply(codeBlock('fix', 'You have no more slots!'));
+          await interaction.reply({
+            content: codeBlock('fix', 'You have no more slots!'),
+            ephemeral: true,
+          });
           return;
         }
         // if user dont have enough points
         if (user.dubs < seedToBuy.price) {
-          await interaction.reply(codeBlock('diff', `- You don't have enough $dub to buy this seed!`));
+          await interaction.reply({
+            content: codeBlock('diff', `- You don't have enough $dub to buy this seed!`),
+            ephemeral: true,
+          });
           return;
         }
 
@@ -82,15 +94,24 @@ export default {
         user.dubs = user.dubs - seedToBuy.price;
         await user.save();
 
-        await interaction.reply(codeBlock('diff', `+ 🌱 You have bought '${seedToBuy.name}' for ${seedToBuy.price} $dub`));
+        await interaction.reply({
+          content: codeBlock('diff', `+ 🌱 You have bought '${seedToBuy.name}' for ${seedToBuy.price} $dub`),
+          ephemeral: true,
+        });
         break;
       case 'booster':
-        await interaction.reply(codeBlock('css', 'Boosters are coming soon'));
+        await interaction.reply({
+          content: codeBlock('css', 'Boosters are coming soon'),
+          ephemeral: true,
+        });
         return;
         break;
     
       default:
-        await interaction.reply(codeBlock('css', 'This shop is not available, open a request!'));
+        await interaction.reply({
+          content: codeBlock('css', 'This shop is not available, open a request!'),
+          ephemeral: true,
+        });
         break;
     }
 

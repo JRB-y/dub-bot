@@ -4,7 +4,11 @@ const Models = {
   User: mongoose.model('User', {
     discord_id: Number,
     discord_username: String,
-    dubs: Number,
+    dubs: mongoose.Types.Decimal128,
+    weed: [{
+      id: { type: mongoose.Schema.Types.ObjectId, ref: 'Seed' },
+      quantity: { type: Number, default: 0 },
+    }],
     level: { type: Number, default: 0 },
     max_seeds: { type: Number, default: 3 },
     seeds: [{
@@ -13,7 +17,9 @@ const Models = {
       max_feeds: { type: Number, require: true },
       last_feed: { type: Date, default: null },
       created_at: { type: Date, default: Date.now },
-    }]
+    }],
+    last_work: { type: Date, default: null },
+    worked: { type: Number, default: 0 }
   }),
   Seed: mongoose.model('Seed', {
     name: String,
