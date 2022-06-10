@@ -19,23 +19,22 @@ export default {
      * 2 - check if the user has the role env.process.WORK_ROLE
      * 3 - if yes he can work!
      */
-    if (interaction.channelId !== process.env.WORK_CHANNEL) {
-      return interaction.reply({
-        content: `You can only work in ${channelMention(process.env.WORK_CHANNEL)} channel`,
-        ephemeral: true,
-      })
-    }
+    // if (interaction.channelId !== process.env.WORK_CHANNEL) {
+    //   return interaction.reply({
+    //     content: `You can only work in ${channelMention(process.env.WORK_CHANNEL)} channel`,
+    //     ephemeral: true,
+    //   })
+    // }
 
-    const hasWorkerRole = interaction.member._roles.find(r => r === process.env.WORK_ROLE_ID);
-    if (!hasWorkerRole) return interaction.reply({
-      content: `You need ${roleMention(process.env.WORK_ROLE_ID)} role!\nGo to <#${process.env.WELCOME_CHANNEL}> and react to the pinned message to grant the role!`,
-      ephemeral: true,
-    });
+    // const hasWorkerRole = interaction.member._roles.find(r => r === process.env.WORK_ROLE_ID);
+    // if (!hasWorkerRole) return interaction.reply({
+    //   content: `You need ${roleMention(process.env.WORK_ROLE_ID)} role!\nGo to <#${process.env.WELCOME_CHANNEL}> and react to the pinned message to grant the role!`,
+    //   ephemeral: true,
+    // });
 
     const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-    console.log('random', random);
-    const dubEarned = ((random + 1) * 1) / 1000
-    console.log('dubEarned', (Number(dubEarned)).toFixed(2));
+    // const dubEarned = ((random + 1) * 1) / 1000
+    // console.log('dubEarned', (Number(dubEarned)).toFixed(2));
 
     let nextWork = null;
     if (user.last_work) {
@@ -47,11 +46,10 @@ export default {
         })
       } else if (nextWork.isBefore(moment())) {
         const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-        console.log('random', random);
-        const dubEarned = (random * user.level) / 1000
+        const dubEarned = Number((random * user.level) / 1000);
         user.last_work = moment().add(30, 'm');
         user.worked = user.worked + 1;
-        user.dubs = user.dubs + dubEarned;
+        user.dubs = Number((user.dubs) + dubEarned);
         await user.save();
 
         return interaction.reply({
@@ -69,7 +67,7 @@ export default {
     // need to caculate the $dub earned!
     return interaction.reply({
       content: codeBlock('yaml', `You start working in the coffee-shop get back in 30 minutes to collect your $dub`),
-      ephemeral: true,
+      // ephemeral: true,
     })
 
 

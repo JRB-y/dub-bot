@@ -2,7 +2,7 @@ import { Interaction } from 'discord.js';
 import { SlashCommandBuilder, blockQuote, codeBlock } from '@discordjs/builders';
 import { User } from '../queries/index.js';
 import moment from 'moment';
-
+import { Config } from '../config/index.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('feed')
@@ -58,7 +58,7 @@ export default {
         feedable.push(seed);
       }
     }
-    const feedTotalCost = feedable.length * 200;
+    const feedTotalCost = feedable.length * Config.feedPrice;
 
     switch (subcommand) {
       /**
@@ -75,7 +75,7 @@ export default {
        * Feed plant <slot> subcommand
        */
       case 'plant':
-        if (user.dubs < 200) {
+        if (user.dubs < Config.feedPrice) {
           await interaction.reply({
             content: codeBlock('diff', '- You dont have enough $dub to feed!'),
             ephemeral: true,
@@ -102,7 +102,7 @@ export default {
           return;
         }
 
-        user.dubs = user.dubs - 200;
+        user.dubs = user.dubs - Config.feedPrice;
         seedToFeed.feeds += 1;
         seedToFeed.last_feed = now;
         await user.save();

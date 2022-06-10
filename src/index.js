@@ -70,9 +70,8 @@ client.on('messageCreate', async (message) => {
 
   const user = await User.getByDiscord(message.author.id);
   let dubs = message.content.trim().split(/\s+/).filter(w => w.length > 1).length;
-  console.log('dubs', dubs);
   dubs = dubs / 100;
-  console.log('dubs', dubs);
+
   // dubs = parseFloat(dubs/16).toFixed(2)
   if (!user) {
     await User.create({ discord_id: message.author.id, discord_username: message.author.username, dubs });
@@ -82,7 +81,6 @@ client.on('messageCreate', async (message) => {
 
   // TODO: we can do 1 request for the 2 actions one update
   const totalDubs = (Number(user.dubs) + dubs).toFixed(2);
-  console.log('totalDubs', totalDubs);
 
   // Level the user
   let levelUp = false;
