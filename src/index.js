@@ -70,7 +70,7 @@ client.on('messageCreate', async (message) => {
 
   const user = await User.getByDiscord(message.author.id);
   if (!user) {
-    await User.create({ discord_id: message.author.id, discord_username: message.author.username, dubs });
+    await User.create({ discord_id: message.author.id, discord_username: message.author.username, dubs: 0 });
     return;
   }
 
