@@ -37,49 +37,46 @@ client.once('ready', async (client) => {
   }
 });
 
-client.on('messageReactionAdd', async (reaction, user) => {
-  if (reaction.message.channelId !== process.env.WELCOME_CHANNEL) return;
-  const guild = reaction.message.guild;
-  let role = guild.roles.cache.find(r => r.name === process.env.WORK_ROLE);
-  if (role) {
-    await guild.members.cache.get(user.id).roles.add(role);
-    // await guild.channels.cache.get(process.env.WORK_CHANNEL).send({
-    //   content: `You have been promoted to work in the cannabis industry`,
-    //   ephemeral: true,
-    // })
-    // await reaction.message.channel.send(
-    //   {
-    //     content: `You have been promoted to work in the cannabis industry check #<980772402059444264>`,
-    //     ephemeral: true
-    //   }
-    // );
-  };
-});
-client.on('messageReactionRemove', async (reaction, user) => {
-  console.log('remove');
-  if (reaction.message.channelId !== process.env.WELCOME_CHANNEL) return;
-  const guild = reaction.message.guild;
-  let role = guild.roles.cache.find(r => r.name === process.env.WORK_ROLE);
-  if (role) {
-    await guild.members.cache.get(user.id).roles.remove(role);
-  };
-});
+// client.on('messageReactionAdd', async (reaction, user) => {
+//   if (reaction.message.channelId !== process.env.WELCOME_CHANNEL) return;
+//   const guild = reaction.message.guild;
+//   let role = guild.roles.cache.find(r => r.name === process.env.WORK_ROLE);
+//   if (role) {
+//     await guild.members.cache.get(user.id).roles.add(role);
+//     await guild.channels.cache.get(process.env.WORK_CHANNEL).send({
+//       content: `You have been promoted to work in the cannabis industry`,
+//       ephemeral: true,
+//     })
+//     await reaction.message.channel.send(
+//       {
+//         content: `You have been promoted to work in the cannabis industry check #<980772402059444264>`,
+//         ephemeral: true
+//       }
+//     );
+//   };
+// });
+// client.on('messageReactionRemove', async (reaction, user) => {
+//   console.log('remove');
+//   if (reaction.message.channelId !== process.env.WELCOME_CHANNEL) return;
+//   const guild = reaction.message.guild;
+//   let role = guild.roles.cache.find(r => r.name === process.env.WORK_ROLE);
+//   if (role) {
+//     await guild.members.cache.get(user.id).roles.remove(role);
+//   };
+// });
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
 
   const user = await User.getByDiscord(message.author.id);
-  let dubs = message.content.trim().split(/\s+/).filter(w => w.length > 1).length;
-  dubs = dubs / 100;
-
-  // dubs = parseFloat(dubs/16).toFixed(2)
   if (!user) {
     await User.create({ discord_id: message.author.id, discord_username: message.author.username, dubs });
     return;
   }
 
-
-  // TODO: we can do 1 request for the 2 actions one update
+  // dubs count
+  const words = message.content.trim().split(/\s+/).filter(w => w.length > 1).length;
+  const dubs = words / 100;
   const totalDubs = (Number(user.dubs) + dubs).toFixed(2);
 
   // Level the user
@@ -103,13 +100,12 @@ client.on('messageCreate', async (message) => {
 
 client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
+  if (interaction.user.bot) return;
 
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
 
-
   try {
-    if (interaction.user.bot) return;
     const user = await User.getByDiscord(interaction.user.id);
     await command.execute(interaction, { user });
   } catch (error) {

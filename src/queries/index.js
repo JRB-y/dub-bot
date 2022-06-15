@@ -7,7 +7,8 @@ const User = {
   create(data) {
     return Models.User.create(data);
   },
-  updateByDiscordId: (discord_id, data) => Models.User.findOneAndUpdate({ discord_id }, data)
+  updateByDiscordId: (discord_id, data) => Models.User.findOneAndUpdate({ discord_id }, data),
+  getTop: (top) => Models.User.find({}).sort({ dubs: -1 }).limit(top),
 }
 
 export {

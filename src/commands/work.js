@@ -42,7 +42,7 @@ export default {
       if (nextWork.isAfter(moment())) {
         return interaction.reply({
           content: codeBlock('fix', `You are currently working come back at ${nextWork.format('YYYY-MM-DD HH:mm')} to collect your $dub!`),
-          ephemeral: true,
+          // ephemeral: true,
         })
       } else if (nextWork.isBefore(moment())) {
         const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
@@ -54,7 +54,7 @@ export default {
 
         return interaction.reply({
           content: codeBlock('yaml', `You have earned ${dubEarned} $dub.\nYou start working in the coffee-shop get back in 30 minutes.`),
-          ephemeral: true,
+          // ephemeral: true,
         })
       }
     }

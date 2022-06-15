@@ -1,6 +1,5 @@
 import { codeBlock, SlashCommandBuilder } from '@discordjs/builders';
 import { Interaction } from 'discord.js';
-import { quote } from '@discordjs/builders';
 import { Seeds } from '../config/index.js';
 import { Models } from '../db/index.js';
 import { User } from '../queries/index.js';
