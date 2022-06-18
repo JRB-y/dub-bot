@@ -11,6 +11,13 @@ const User = {
   getTop: (top) => Models.User.find({}).sort({ dubs: -1 }).limit(top),
 }
 
+const Seed = {
+  findById(id) {
+    return Models.Seed.findById(id);
+  }
+}
+
 export {
-  User
+  User,
+  Seed
 }

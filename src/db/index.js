@@ -5,10 +5,7 @@ const Models = {
     discord_id: Number,
     discord_username: String,
     dubs: mongoose.Types.Decimal128,
-    weed: [{
-      id: { type: mongoose.Schema.Types.ObjectId, ref: 'Seed' },
-      quantity: { type: Number, default: 0 },
-    }],
+    weed: { type: Number, default: 0 },
     level: { type: Number, default: 0 },
     max_seeds: { type: Number, default: 3 },
     seeds: [{
@@ -18,6 +15,7 @@ const Models = {
       last_feed: { type: Date, default: null },
       created_at: { type: Date, default: Date.now },
     }],
+    seedHarvested: { type: Number, default: 0 },
     last_work: { type: Date, default: null },
     worked: { type: Number, default: 0 }
   }),

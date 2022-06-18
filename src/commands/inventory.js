@@ -23,7 +23,7 @@ export default {
 
     if (!user) return interaction.reply('You are quite! \n Start talking to earn points...\n 1 word = 1 points');
 
-    let message = `$dub: ${user.dubs}\nlevel: ${user.level}\nslots: ${user.seeds.length} / ${user.max_seeds}\n------------------------------\n\nYou have ${user .seeds.length} plant(s):\n\n`;
+    let message = `$dub: ${user.dubs}\n$weed: ${Array.isArray(user.weed) ? 0 : user.weed}\n\nlevel: ${user.level}\nslots: ${user.seeds.length} / ${user.max_seeds}\nharvested: ${user.seedHarvested || 0} plant(s)\n------------------------------\n\nYou have ${user .seeds.length} plant(s):\n\n`;
 
     const userSeeds = user.seeds.map(seed => {
       const foundSeed = seeds.find(s => s._id.toString() === seed.id.toString());
