@@ -46,7 +46,7 @@ export default {
         })
       } else if (nextWork.isBefore(moment())) {
         const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-        const dubEarned = Number((random * user.level + 1) / 1000);
+        const dubEarned = Number((random * user.level + 1) / 100);
         user.last_work = moment().add(30, 'm');
         user.worked = user.worked + 1;
         user.dubs = Number((user.dubs) + dubEarned);
