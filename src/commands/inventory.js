@@ -34,7 +34,7 @@ export default {
       const nextFeed = moment(seed.last_feed).add(15, 'm');
       if (seed.feeds >= seed.max_feeds) {
         message = `🌱 ${message} (harvestable) \n`;
-      } else if (nextFeed.isBefore(moment())) {
+      } else if (nextFeed.isBefore(now)) {
         message = `💧 ${message} (feedable) \n`;
       } else {
         message = `🕧 ${message} (feedable at ${nextFeed.format('yyyy-MM-DD HH:mm')}) \n`;
