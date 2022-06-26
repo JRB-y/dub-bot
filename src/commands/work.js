@@ -32,7 +32,7 @@ export default {
     //   ephemeral: true,
     // });
 
-    const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+    // const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
     // const dubEarned = ((random + 1) * 1) / 1000
     // console.log('dubEarned', (Number(dubEarned)).toFixed(2));
 
@@ -42,14 +42,21 @@ export default {
       if (nextWork.isAfter(moment())) {
         return interaction.reply({
           content: codeBlock('fix', `You are currently working come back at ${nextWork.format('YYYY-MM-DD HH:mm')} to collect your $dub!`),
-          // ephemeral: true,
+          ephemeral: true,
         })
       } else if (nextWork.isBefore(moment())) {
         const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+        console.log('random', random);
+
         const dubEarned = Number((random * user.level + 1) / 100);
+        console.log('dubEarned', dubEarned);
+
         user.last_work = moment().add(30, 'm');
         user.worked = user.worked + 1;
-        user.dubs = Number((user.dubs) + dubEarned);
+        user.dubs = Number(Number(user.dubs) + dubEarned).toFixed(2);
+
+        console.log('(user.dubs) + dubEarned ', (user.dubs) + dubEarned);
+        console.log('user.dubs ', user.dubs);
         await user.save();
 
         return interaction.reply({
