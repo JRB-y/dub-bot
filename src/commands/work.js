@@ -45,15 +45,15 @@ export default {
           ephemeral: true,
         })
       } else if (nextWork.isBefore(moment())) {
-        const random = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-        const dubEarned = Number((random * user.level + 1) / 100);
+        const random = Math.random();
+        // const dubEarned = Number((random * user.level + 1) / 100);
         user.last_work = moment().add(30, 'm');
         user.worked = user.worked + 1;
-        user.dubs = Number(Number(user.dubs) + dubEarned).toFixed(2);
+        user.dubs = Number(random).toFixed(2);
         await user.save();
 
         return interaction.reply({
-          content: codeBlock('yaml', `You have earned ${dubEarned} $dub.\nYou start working in the coffee-shop get back in 30 minutes.`),
+          content: codeBlock('yaml', `You have earned ${Number(random).toFixed(2) } $dub.\nYou start working in the coffee-shop get back in 30 minutes.`),
           // ephemeral: true,
         })
       }
