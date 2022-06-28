@@ -62,7 +62,7 @@ export default {
         if (embeds.length) {
           interaction.channel.send({ embeds: embeds })
         }
-        interaction.reply({ content: blockQuote('fix', 'TOP FLOOR: Not a financial advice DYOR!!'), ephemeral: true });
+        interaction.reply({ content: codeBlock('fix', 'TOP FLOOR: Not a financial advice DYOR!!'), ephemeral: true });
         break;
 
       default:

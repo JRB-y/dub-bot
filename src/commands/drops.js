@@ -52,7 +52,7 @@ export default {
     if (embeds.length) {
       interaction.channel.send({ embeds: embeds });
     }
-    return interaction.reply({ content: blockQuote('fix', 'DROPS: Not a financial advice DYOR!!'), ephemeral: true });
+    return interaction.reply({ content: codeBlock('fix', 'DROPS: Not a financial advice DYOR!!'), ephemeral: true });
 
   },
 };
