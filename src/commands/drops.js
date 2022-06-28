@@ -32,7 +32,7 @@ export default {
             .setTitle(`${d.name}`)
             .setURL(d.website)
             .setAuthor({ name: `At ${d.time} (${d.nft_count} nft) (price: ${d.price})` })
-            .setDescription(d.extra)
+            .setDescription(d.extra ? d.extra : '--')
             .setThumbnail(`${d.image}`)
             // .addFields(
             //   { name: 'Price', value: d.price, inline: true },
