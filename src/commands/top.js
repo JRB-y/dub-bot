@@ -55,11 +55,14 @@ export default {
           )
           count++;
           if (count >= 10) {
-            interaction.channel.send({ embeds: embeds, ephemeral: true });
+            interaction.channel.send({ embeds: embeds });
             embeds = [];
           }
         }
-        interaction.reply({ content: 'Drops of the day served!', ephemeral: true });
+        if (embeds.length) {
+          interaction.channel.send({ embeds: embeds })
+        }
+        interaction.reply({ content: blockQuote('fix', 'TOP FLOOR: Not a financial advice DYOR!!'), ephemeral: true });
         break;
 
       default:
