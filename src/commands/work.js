@@ -49,7 +49,7 @@ export default {
         // const dubEarned = Number((random * user.level + 1) / 100);
         user.last_work = moment().add(30, 'm');
         user.worked = user.worked + 1;
-        user.dubs = Number(random).toFixed(2);
+        user.dubs = Number(Number(user.dubs) + random).toFixed(2);
         await user.save();
 
         return interaction.reply({
