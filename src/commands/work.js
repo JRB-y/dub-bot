@@ -19,12 +19,12 @@ export default {
      * 2 - check if the user has the role env.process.WORK_ROLE
      * 3 - if yes he can work!
      */
-    // if (interaction.channelId !== process.env.WORK_CHANNEL) {
-    //   return interaction.reply({
-    //     content: `You can only work in ${channelMention(process.env.WORK_CHANNEL)} channel`,
-    //     ephemeral: true,
-    //   })
-    // }
+    if (interaction.channelId !== process.env.WORK_CHANNEL) {
+      return interaction.reply({
+        content: `You can only work in ${channelMention(process.env.WORK_CHANNEL)}`,
+        ephemeral: true,
+      });
+    }
 
     // const hasWorkerRole = interaction.member._roles.find(r => r === process.env.WORK_ROLE_ID);
     // if (!hasWorkerRole) return interaction.reply({
