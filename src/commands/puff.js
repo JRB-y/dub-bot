@@ -22,7 +22,7 @@ export default {
     }
 
     const message = await interaction.client.channels.cache.get(process.env.SMOKE_CHANNEL).send({
-      content: `@everyone First to react get the dub 💨`,
+      content: `@everyone First to react with 💨 get $dub!`,
     });
 
     const filter = (reaction, user) => {
@@ -30,7 +30,7 @@ export default {
       return ['💨'].includes(reaction.emoji.name);
     };
 
-    message.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
+    message.awaitReactions({ filter, max: 1, errors: ['time'] })
       .then(async collected => {
         const reaction = collected.first();
         const [reactedUser] = await reaction.users.fetch();
