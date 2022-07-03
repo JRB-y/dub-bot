@@ -28,6 +28,14 @@ const Models = {
     descriptions: { type: String, default: null},
     wikipedia_url: { type: String, default: null },
   }),
+  Rugs: mongoose.model('Rug', {
+    from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    to: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    win: { type: Boolean, default: false },
+    dubs: { type: mongoose.Types.Decimal128 , default : 0 },
+    isFinished: { type: Boolean, default: false },
+    created_at: { type: Date, default: Date.now },
+  })
 }
 
 export {

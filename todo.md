@@ -7,9 +7,26 @@
 [ ] admin can airdrop $dub
 
 [X] Puff puff pass
-  [X] setup a SMOKE_CHANNEL
-  [X] ROLE_STAFF
-  [X] command name: puff
-  [X] when command launched: bot will send a message to #smoke-room
-  [X] First to react earn $dub
-  [X] Dubbot send a message with the winner name
+[X] setup a SMOKE_CHANNEL
+[X] ROLE_STAFF
+[X] command name: puff
+[X] when command launched: bot will send a message to #smoke-room
+[X] First to react earn $dub
+[X] Dubbot send a message with the winner name
+
+[ ] Rug some dub
+[ ] JRB user can use /rug `Zoned out`
+[ ] dubbot send a message in the_hood channel
+
+````
+   @zoned_out, jrb went to rug you !!
+    If you don't react with :crossed_swords: in 5 minutes jrb can rug you some dub!
+```
+
+[ ] If after 5 minutes zoned_out reacted so no one will be rugged
+[ ] If 5 minutes passed and zoned_out didn't react. 
+[ ] Message from dub-bot
+
+````
+   @zoned_out, @jrb rugged you and gain {number} dubs !!
+```

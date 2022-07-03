@@ -23,6 +23,8 @@ export default {
       });
     }
 
+    await interaction.channel.bulkDelete(100);
+
     const response = await fetch('https://api.howrare.is/v0.1/drops');
     const result = await response.json();
     let { data } = result.result;

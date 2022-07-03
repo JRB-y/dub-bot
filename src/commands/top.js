@@ -19,17 +19,20 @@ export default {
    * @param {Interaction} interaction
   */
   async execute(interaction) {
-    const subcommand = interaction.options.getSubcommand();
     if (interaction.channel.id !== process.env.TOOLS_CHANNEL) {
       return interaction.reply({
         content: `⚠️ This command can be used only in <#${process.env.TOOLS_CHANNEL}>`,
         ephemeral: true,
       });
     }
-
+    
+    const subcommand = interaction.options.getSubcommand();
     switch (subcommand) {
-      case 'floor':
+      case 'floor': {
+        // #1 delete all messags in the channel
+        await interaction.channel.bulkDelete(100);
 
+        // #2 fetch data
         const response = await fetch('https://sols.watch/api/top-floor.json');
         const data = await response.json();
 
@@ -64,6 +67,7 @@ export default {
         }
         interaction.reply({ content: codeBlock('fix', 'TOP FLOOR: Not a financial advice DYOR!!'), ephemeral: true });
         break;
+      }
 
       default:
         break;
