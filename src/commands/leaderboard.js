@@ -14,7 +14,7 @@ export default {
    * @param {Interaction} interaction
   */
   async execute(interaction) {
-    const topUsers = await User.getTop(10);
+    const topUsers = await User.getTop(20);
     let message = `🏆 Leaderboard \n`;
     let i = 0;
     for (let user of topUsers) {
