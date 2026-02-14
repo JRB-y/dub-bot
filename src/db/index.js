@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Models = {
   User: mongoose.model('User', {
-    discord_id: Number,
+    discord_id: String,
     discord_username: String,
     dubs: mongoose.Types.Decimal128,
     weed: { type: Number, default: 0 },

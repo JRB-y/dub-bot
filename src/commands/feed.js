@@ -1,6 +1,7 @@
 import { Interaction } from 'discord.js';
 import { SlashCommandBuilder, blockQuote, codeBlock } from '@discordjs/builders';
 import { User } from '../queries/index.js';
+import { Models } from '../db/index.js';
 import moment from 'moment';
 import { Config } from '../config/index.js';
 export default {
@@ -102,14 +103,18 @@ export default {
           return;
         }
 
-        user.dubs = user.dubs - Config.feedPrice;
-        seedToFeed.feeds += 1;
-        seedToFeed.last_feed = now;
-        await user.save();
+        await Models.User.findOneAndUpdate(
+          { discord_id: interaction.user.id, 'seeds._id': seedToFeed._id },
+          {
+            $inc: { dubs: -Config.feedPrice, 'seeds.$.feeds': 1 },
+            $set: { 'seeds.$.last_feed': now.toDate() }
+          }
+        );
         await interaction.reply({
           content: codeBlock('yaml', '💧 🌱You fed your plant 🌱💧'),
           ephemeral: true,
         });
+        break;
       default:
         break;
     }

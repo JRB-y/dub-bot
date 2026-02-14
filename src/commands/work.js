@@ -1,6 +1,7 @@
 import { Interaction } from 'discord.js';
 import { SlashCommandBuilder, blockQuote, codeBlock, channelMention, roleMention } from '@discordjs/builders';
 import moment from 'moment';
+import { User } from '../queries/index.js';
 
 
 export default {
@@ -46,23 +47,23 @@ export default {
         })
       } else if (nextWork.isBefore(moment())) {
         const random = Math.random();
-        // const dubEarned = Number((random * user.level + 1) / 100);
-        user.last_work = moment().add(30, 'm');
-        user.worked = user.worked + 1;
-        user.dubs = Number(Number(user.dubs) + random).toFixed(2);
-        await user.save();
+        const earned = Number(random.toFixed(2));
+        await User.updateByDiscordId(interaction.user.id, {
+          $inc: { dubs: earned, worked: 1 },
+          $set: { last_work: moment().add(30, 'm').toDate() }
+        });
 
         return interaction.reply({
-          content: codeBlock('yaml', `You have earned ${Number(random).toFixed(2) } $dub.\nYou start working in the coffee-shop get back in 30 minutes.`),
+          content: codeBlock('yaml', `You have earned ${earned} $dub.\nYou start working in the coffee-shop get back in 30 minutes.`),
           // ephemeral: true,
         })
       }
     }
 
-    nextWork = moment().add(30, 'm');
-    user.last_work = moment();
-    user.worked = user.worked ? user.worked + 1 : 1;
-    await user.save();
+    await User.updateByDiscordId(interaction.user.id, {
+      $inc: { worked: 1 },
+      $set: { last_work: new Date() }
+    });
 
     // need to caculate the $dub earned!
     return interaction.reply({

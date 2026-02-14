@@ -96,20 +96,20 @@ export default {
       })
       .catch(async () => {
         const userRugged = await User.getByDiscord(userToRug.id);
-        const random = (Math.random() * (userRugged.dubs - 0.1) + 0.1) / 3;
+        const dubsAmount = Number(userRugged.dubs);
+        const random = (Math.random() * (dubsAmount - 0.1) + 0.1) / 3;
+        const stolen = Number(random.toFixed(2));
 
-        userRugged.dubs = userRugged.dubs - random <= 0 ? 0 : Number(userRugged.dubs - random).toFixed(2);
-        await userRugged.save();
-        user.dubs = Number(Number(user.dubs) + Number(random)).toFixed(2);
-        await user.save();
+        await User.updateByDiscordId(userToRug.id, { $inc: { dubs: -stolen } });
+        await User.updateByDiscordId(interaction.user.id, { $inc: { dubs: stolen } });
 
         // NO REACTION AFTER 5 minutes
         const embed = new MessageEmbed()
           .setTitle(`💀 ${userToRug.username} get RUGGED!`)
           .setColor('#FF0000')
-          .setDescription(`${userMention(userToRug.id)} was rugged by ${userMention(interaction.user.id)} for ${random.toFixed(2)} $dub!`);
+          .setDescription(`${userMention(userToRug.id)} was rugged by ${userMention(interaction.user.id)} for ${stolen} $dub!`);
 
-        await Models.Rugs.findOneAndUpdate({ from: user._id.toString(), isFinished: false }, { isFinished: true, win: true, dubs: random.toFixed(2) })
+        await Models.Rugs.findOneAndUpdate({ from: user._id.toString(), isFinished: false }, { isFinished: true, win: true, dubs: stolen })
         await interaction.client.channels.cache.get(process.env.THE_HOOD_CHANNEL).send({
           embeds: [embed],
         });

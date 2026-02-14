@@ -89,9 +89,13 @@ export default {
         }
 
         // we gonna buy here!
-        user.seeds.push({ id: seedToBuy.id, feeds: 0, max_feeds: seedToBuy.grow_feeds, last_feed: null, grow_feeds: seedToBuy.grow_feeds, last_feed: moment().subtract(15, 'm') });
-        user.dubs = user.dubs - seedToBuy.price;
-        await user.save();
+        await Models.User.findOneAndUpdate(
+          { discord_id: interaction.user.id },
+          {
+            $inc: { dubs: -seedToBuy.price },
+            $push: { seeds: { id: seedToBuy.id, feeds: 0, max_feeds: seedToBuy.grow_feeds, last_feed: moment().subtract(15, 'm') } }
+          }
+        );
 
         await interaction.reply({
           content: codeBlock('diff', `+ 🌱 You have bought '${seedToBuy.name}' for ${seedToBuy.price} $dub`),

@@ -1,5 +1,6 @@
 import { Interaction } from 'discord.js';
 import { SlashCommandBuilder, userMention } from '@discordjs/builders';
+import { User } from '../queries/index.js';
 
 
 export default {
@@ -36,9 +37,8 @@ export default {
         const [reactedUser] = await reaction.users.fetch();
 
         if (reaction.emoji.name === '💨') {
-          const random = Number(Math.random()).toFixed(2);
-          user.dubs = Number(Number(user.dubs) + Number(random)).toFixed(2);
-          await user.save();
+          const random = Number(Math.random().toFixed(2));
+          await User.updateByDiscordId(reactedUser[1].id, { $inc: { dubs: random } });
 
           message.reply({
             content: `Yo ${userMention(reactedUser[1].id)} take the joint and ${random} dub.`

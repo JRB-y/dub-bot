@@ -85,8 +85,11 @@ client.on('messageCreate', async (message) => {
     levelUp = true;
   }
 
-  const updateObject = { dubs: totalDubs, level: levelUp ? user.level + 1 : user.level }
-  await User.updateByDiscordId(message.author.id, updateObject);
+  const updateOp = { $inc: { dubs: dubs } };
+  if (levelUp) {
+    updateOp.$inc.level = 1;
+  }
+  await User.updateByDiscordId(message.author.id, updateOp);
 
   // add role
   if (levelUp) {
